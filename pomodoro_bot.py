@@ -1,3 +1,4 @@
+
 """
 Pomodoro Tracker Bot
 ====================
@@ -200,30 +201,27 @@ def main():
     app.add_handler(CommandHandler("weekly", cmd_weekly))
     app.add_handler(CommandHandler("help",   cmd_help))
 
-    # Scheduler
-    scheduler = AsyncIOScheduler()
+    async def post_init(application):
+        scheduler = AsyncIOScheduler()
+        scheduler.add_job(
+            post_daily_summary,
+            trigger="cron",
+            hour=SUMMARY_HOUR,
+            minute=SUMMARY_MINUTE,
+            args=[application.bot]
+        )
+        scheduler.add_job(
+            post_weekly_summary,
+            trigger="cron",
+            day_of_week="sun",
+            hour=23,
+            minute=30,
+            args=[application.bot]
+        )
+        scheduler.start()
+        log.info("Pomodoro bot is running...")
 
-    # Daily summary — every day at SUMMARY_HOUR:SUMMARY_MINUTE
-    scheduler.add_job(
-        post_daily_summary,
-        trigger="cron",
-        hour=SUMMARY_HOUR,
-        minute=SUMMARY_MINUTE,
-        args=[app.bot]
-    )
-
-    # Weekly summary — every Sunday at 23:30
-    scheduler.add_job(
-        post_weekly_summary,
-        trigger="cron",
-        day_of_week="sun",
-        hour=23,
-        minute=30,
-        args=[app.bot]
-    )
-
-    scheduler.start()
-    log.info("🍅 Pomodoro bot is running...")
+    app.post_init = post_init
     app.run_polling()
 
 if __name__ == "__main__":
