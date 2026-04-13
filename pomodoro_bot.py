@@ -1,5 +1,5 @@
-# -*- coding: utf-8 -*-
-🍅 Pomodoro Tracker Bot
+""
+ Pomodoro Tracker Bot
 ========================
 Setup:
 1. Create a bot via @BotFather → copy the token
