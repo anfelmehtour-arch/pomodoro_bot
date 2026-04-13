@@ -28,7 +28,8 @@ from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
 # CONFIG
 
-BOT_TOKEN  = "YOUR_BOT_TOKEN_HERE"       # from @BotFather
+BOT_TOKEN  = "import os
+BOT_TOKEN = os.environ.get("BOT_TOKEN")"       # from @BotFather
 CHANNEL_ID = "@your_channel_username"    # e.g. "@myproductivitychannel"
 SUMMARY_HOUR   = 23   # auto-post daily summary at 23:00
 SUMMARY_MINUTE = 0
